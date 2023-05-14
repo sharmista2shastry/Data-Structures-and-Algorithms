@@ -79,4 +79,28 @@ class Trie {
         // Write your code here
         return search(root, word);
     }
+   
+   void remove(TrieNode *root, string word)
+   {
+      if(word.size() == 0)
+      {
+         root->isTerminal = false;
+         return;
+      }
+      
+      int index = word[0] - 'a';
+      TrieNode *child;
+      
+      if(root->children[index] != NULL)
+         child = root->children[index];
+      else
+         return;
+      
+      remove(child, word.substr(1));
+   }
+   
+   void remove(string word)
+   {
+      return remove(root, word);
+   }
 };
