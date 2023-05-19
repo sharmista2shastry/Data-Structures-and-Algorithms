@@ -55,6 +55,8 @@ int main(){
     cin >> n;
     int res[10][10];
 
+    // We can use memset also to initialise this board with 0
+    
     for(int i=0; i<n; i++)
     {
         for(int j=0; j<n; j++)
