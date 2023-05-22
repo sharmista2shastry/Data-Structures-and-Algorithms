@@ -1,53 +1,44 @@
 //Time Complexity:It has a time complexity of O(2^n), where n is the size of the input array array
 //Space Complexity: The space complexity of the code is O(n), where n is the size of the input array arr. This is because the code uses recursion, and the space required for the recursive call stack grows with the depth of the recursion, which is equal to the size of the input array. 
 
-#include<bits/stdc++.h>
-using namespace std;
-
-void subsetSum(int *arr, int n, int &count, int sum, int i)
-{
-    if (sum == 0)
+#include <bits/stdc++.h> 
+using namespace std; 
+int subsetCount(int arr[], int n, int index, int target) 
+{ 
+    if (index == n) 
     {
-        count++;
-        return;
-    }
+        if (target == 0) 
+        return 1; 
+        
+        else return 0; 
+    } 
 
-    if (i == n)
-        return;
+    int count = 0; 
 
-    // Include current element in the sum and recurse
-    if (sum - arr[i] >= 0)
-    {
-        subsetSum(arr, n, count, sum - arr[i], i + 1);
-    }
+    if (target - arr[index] >= 0) 
+    { 
+        count += subsetCount(arr, n, index + 1, target - arr[index]); 
+    } 
 
-    // Exclude current element from the sum and recurse
-    subsetSum(arr, n, count, sum, i + 1);
-}
-
-int main(){
+    count += subsetCount(arr, n, index + 1, target); 
     
-    // write your code here
-    int t;
-    cin >> t;
-    while(t--)
-    {
-        int n;
-        cin >> n;
-        int *arr = new int[n];
-        int sum;
-        cin >> sum;
+    return count;
+} 
 
-        for(int i=0; i<n; i++)
-        cin >> arr[i];
+int main() 
+{ 
+    int t; cin >> t; 
+    while (t--) 
+    { 
+        int n, k; 
+        cin >> n >> k; 
+        int arr[n]; 
 
-        int count = 0;
+        for (int i = 0; i < n; i++)
+        { 
+            cin >> arr[i]; 
+        } 
 
-        subsetSum(arr, n, count, sum, 0);
-        cout << count << endl;
-
-        delete [] arr;
+        cout << subsetCount(arr, n, 0, k) << endl;
     }
-
-    return 0;
 }
