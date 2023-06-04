@@ -79,3 +79,48 @@ int editDistance(string s1, string s2) {
 
 	return helper(s1, s2, m, n, ans);
 }
+
+//Using DP
+
+int helper(string s1, string s2, int m, int n, int **ans)
+{
+	for(int i=1; i<=m; i++)
+	{
+		for(int j=1; j<=n; j++)
+		{
+			if(s1[m-i] == s2[n-j])
+			ans[i][j] = ans[i-1][j-1];
+				
+			else
+			ans[i][j] = min(1 + ans[i-1][j], min(1 + ans[i][j-1], 1 + ans[i-1][j-1]));
+		}
+	}
+
+	return ans[m][n];
+}
+
+int **allocate2DArray(int m, int n)
+{
+	int **ans = new int*[m+1];
+
+	for(int i=0; i<=m; i++)
+	{
+		ans[i] = new int[n+1];
+	}
+
+	for(int i=0; i<=m; i++)
+	ans[i][0] = i;
+
+	for(int j=0; j<=n; j++)
+	ans[0][j] = j;
+
+	return ans;
+}
+
+int editDistance(string s1, string s2) {
+	// Write your code here
+	int m = s1.length(), n = s2.length();
+	int **ans = allocate2DArray(m, n);
+
+	return helper(s1, s2, m, n, ans);
+}
