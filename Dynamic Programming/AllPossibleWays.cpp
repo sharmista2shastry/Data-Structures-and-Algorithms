@@ -1,29 +1,31 @@
-//Using Brute Force
+//Using memoization
 
-#include<math.h>
+#include<cmath>
+#include <unordered_map>
 
-void helper(int a, int b, int &count, int i)
+int helper(int a, int b, int i, unordered_map <int, int> &ans)
 {
+	/*if(a < 0)
+	return 0;*/
+
 	if(a == 0)
-	{
-		count++;
-		return;
-	}
+	return 1;
 
 	if(a - pow(i,b) < 0)
-	return;
+	return 0;
 
-	helper(a-pow(i,b), b, count, i+1);
-	helper(a, b, count, i+1);
+	if(ans.count(ans[a]) > 0)
+	return ans[a];
+
+	ans[a] = helper(a-pow(i,b), b, i+1, ans) + helper(a, b, i+1, ans);
+
+	return ans[a];
 }
 
 int getAllWays(int a, int b) {
 	// Write your code here
-	int count = 0;
-	helper(a, b, count, 1);
+	unordered_map<int, int> ans;
 
-	return count;
+	return helper(a, b, 1, ans);
 }
-
-//Using Memoization
 
