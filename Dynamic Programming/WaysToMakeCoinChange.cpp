@@ -1,4 +1,5 @@
 //Using Basic Recursion
+//Time Complexity: O(2^n)
 
 #include <climits>
 #include <unordered_map>
@@ -27,14 +28,16 @@ int countWaysToMakeChange(int denominations[], int numDenominations, int value)
 }
 
 //Using Memoization
+//Time Complexity: O(numDenominations * value);
 
 #include <climits>
 #include <unordered_map>
 
-using MemoizationTable = std::unordered_map<std::string, int>;
+ unordered_map<string, int> mp;
 
-int countWaysToMakeChangeHelper(int denominations[], int numDenominations, int value, MemoizationTable& memo) {
-    if (value == 0)
+int helper(int denominations[], int numDenominations, int value)
+{
+	if (value == 0)
         return 1;
 
     if (value < 0)
@@ -43,18 +46,19 @@ int countWaysToMakeChangeHelper(int denominations[], int numDenominations, int v
     if (numDenominations == 0)
         return 0;
 
-    std::string key = std::to_string(numDenominations) + "-" + std::to_string(value);
-    if (memo.find(key) != memo.end())
-        return memo[key];
+	string key = to_string(numDenominations) + "-" + to_string(value);
 
-    int include = countWaysToMakeChangeHelper(denominations, numDenominations, value - denominations[0], memo);
-    int exclude = countWaysToMakeChangeHelper(denominations + 1, numDenominations - 1, value, memo);
+	if(mp.find(key) != mp.end())
+	return mp[key]; 
 
-    memo[key] = include + exclude;
-    return memo[key];
+    int include = helper(denominations, numDenominations, value - denominations[0]);
+    int exclude = helper(denominations + 1, numDenominations - 1, value);
+
+    mp[key] = include + exclude;
+	return mp[key];
 }
 
-int countWaysToMakeChange(int denominations[], int numDenominations, int value) {
-    MemoizationTable memo;
-    return countWaysToMakeChangeHelper(denominations, numDenominations, value, memo);
+int countWaysToMakeChange(int denominations[], int numDenominations, int value) 
+{
+	return helper(denominations, numDenominations, value);
 }
