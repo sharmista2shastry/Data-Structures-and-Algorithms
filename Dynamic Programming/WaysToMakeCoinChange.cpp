@@ -33,9 +33,7 @@ int countWaysToMakeChange(int denominations[], int numDenominations, int value)
 #include <climits>
 #include <unordered_map>
 
- unordered_map<string, int> mp;
-
-int helper(int denominations[], int numDenominations, int value)
+int helper(int denominations[], int numDenominations, int value, int **ans)
 {
 	if (value == 0)
         return 1;
@@ -46,19 +44,37 @@ int helper(int denominations[], int numDenominations, int value)
     if (numDenominations == 0)
         return 0;
 
-	string key = to_string(numDenominations) + "-" + to_string(value);
+	if(ans[numDenominations][value] != -1)
+	return ans[numDenominations][value];
 
-	if(mp.find(key) != mp.end())
-	return mp[key]; 
+    int include = helper(denominations, numDenominations, value - denominations[0], ans);
+    int exclude = helper(denominations + 1, numDenominations - 1, value, ans);
 
-    int include = helper(denominations, numDenominations, value - denominations[0]);
-    int exclude = helper(denominations + 1, numDenominations - 1, value);
+    ans[numDenominations][value] = include + exclude;
+	return ans[numDenominations][value];
+}
 
-    mp[key] = include + exclude;
-	return mp[key];
+int **allocate2DArray(int numDenominations, int value)
+{
+	int **ans = new int*[numDenominations + 1];
+
+	for(int i=0; i<=numDenominations; i++)
+	ans[i] = new int[value + 1];
+
+	return ans;
 }
 
 int countWaysToMakeChange(int denominations[], int numDenominations, int value) 
 {
-	return helper(denominations, numDenominations, value);
+	int **ans = allocate2DArray(numDenominations, value);
+
+	for(int i=0; i<=numDenominations; i++)
+	{
+		for(int j=0; j<=value; j++)
+		{
+			ans[i][j] = -1;
+		}
+	}
+
+	return helper(denominations, numDenominations, value, ans);
 }
