@@ -92,9 +92,9 @@ int helper(int denominations[], int numDenominations, int value, int **ans)
 		for(int j=1; j<=value; j++)
 		{
 			int include = 0, exclude = 0;
-			
-			if(j - denominations[i - 1] >= 0)
-                    include = ans[i][j - denominations[i - 1]];
+
+			if(j - denominations[numDenominations - i] >= 0)
+                    include = ans[i][j - denominations[numDenominations - i]];
 
                 exclude = ans[i - 1][j];
 
@@ -127,3 +127,4 @@ int countWaysToMakeChange(int denominations[], int numDenominations, int value)
 
 	return helper(denominations, numDenominations, value, ans);
 }
+
