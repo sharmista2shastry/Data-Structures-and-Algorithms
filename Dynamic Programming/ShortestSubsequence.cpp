@@ -1,48 +1,41 @@
 //Using Brute Force
 
 #include <climits>
-#include <unordered_map>
 
-void substrS(string s, string str, unordered_map<string, int> &mpS)
+int helper(string s, string v, int m, int n)
 {
-    if(s.length() == 0)
+    if(m == 0)
+    return 1005;
+
+    if(n <= 0)
+    return 1;
+
+    int i;
+
+    for(i=0; i<n; i++)
     {
-        mpS[str]++;
-        return;
+        if(s[0] == v[i])
+        break;
     }
 
-    substrS(s.substr(1), str + s[0], mpS);
-    substrS(s.substr(1), str, mpS);
-}
+    if(i == n)
+    return 1;
 
-void substrV(string v, string str, unordered_map<string, int> &mpV)
-{
-    if(v.length() == 0)
-    {
-        mpV[str]++;
-        return;
-    }
+    int include = 1 + helper(s.substr(1), v.substr(i+1), m-1, n-i-1);
+    int exclude = helper(s.substr(1), v, m-1, n);
 
-    substrV(v.substr(1), str + v[0], mpV);
-    substrV(v.substr(1), str, mpV);
+    int res = min(include, exclude);
+    return res;
 }
 
 int solve(string s, string v) {
     // Write your code here
-    unordered_map<string, int> mpS, mpV;
-    substrS(s, "", mpS);
-    substrV(v, "", mpV);
+    int m = s.length();
+    int n = v.length();
 
-    int minLen = INT_MAX;
-
-    for(const auto& pair: mpS)
-    {
-        if(mpV.find(pair.first) == mpV.end())
-        {
-            int len = pair.first.length();
-            minLen = min(minLen, len);
-        }
-    }
-
-    return minLen;
+    return helper(s, v, m, n);
 }
+
+//Using memoization
+
+
