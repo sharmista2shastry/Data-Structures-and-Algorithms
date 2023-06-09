@@ -99,4 +99,60 @@ int solve(string s, string v) {
 
 //Using DP
 
+#include <climits>
 
+int helper(string s, string v, int m, int n, int **ans)
+{
+    for(int i=1; i<=m; i++)
+    {
+        for(int j=1; j<=n; j++)
+        {
+            int k;
+
+            for(k=0; k<j; k++)
+            {
+                if(s[m-i] == v[n-(j-k)])
+                break;
+             }
+
+            if(k == j)
+            ans[i][j] = 1;
+
+            else
+            {
+                int include = 1 + ans[i-1][j-k-1];
+                int exclude = ans[i-1][j];
+
+                ans[i][j] = min(include, exclude);
+            }
+        }
+    }
+
+    return ans[m][n];
+}
+
+int **allocate2DArray(int m, int n)
+{
+    int **ans = new int*[m+1];
+
+    for(int i=0; i<=m; i++)
+    ans[i] = new int[n+1];
+
+    for(int j=0; j<=n; j++)
+    ans[0][j] = 1005;
+
+    for(int i=1; i<=m; i++)
+    ans[i][0] = 1;
+
+    return ans;
+}
+
+int solve(string s, string v) {
+    // Write your code here
+    int m = s.length();
+    int n = v.length();
+
+    int **ans = allocate2DArray(m, n);
+
+    return helper(s, v, m, n, ans);
+}
