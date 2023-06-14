@@ -1,3 +1,5 @@
+//Time Complexity: O(n^2)
+
 bool helper(vector<vector<char>> &board, bool **visited, int n, int m, int i, int j, int &count, int row, int col)
 {
     if(i-1 == row && j == col)
