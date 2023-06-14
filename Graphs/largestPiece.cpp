@@ -1,3 +1,5 @@
+//Time Complexity: O(n^2)
+
 void helper(vector<vector<int>> &cake, bool **visited, int n, int i, int j, int &count)
 {
     visited[i][j] = true;
