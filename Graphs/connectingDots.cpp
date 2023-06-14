@@ -1,4 +1,4 @@
-//Time Complexity: O(n^2)
+//Time Complexity: O(n^2 * m^2)
 
 bool helper(vector<vector<char>> &board, bool **visited, int n, int m, int i, int j, int &count, int row, int col)
 {
