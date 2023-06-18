@@ -100,7 +100,7 @@ int main() {
 }
 
 //Optimized approach using priority queue
-//Time Complexity: O((V+E)logV)
+//Time Complexity: O((n+v)logn)
 
 #include <bits/stdc++.h>
 using namespace std;
