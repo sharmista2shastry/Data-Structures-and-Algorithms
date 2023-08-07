@@ -1,3 +1,5 @@
+// Use a character array to store the characters instead of an unordered map to optimise this code
+
 #include <bits/stdc++.h>
 
 int lengthOfLongestSubstring(string s) {
