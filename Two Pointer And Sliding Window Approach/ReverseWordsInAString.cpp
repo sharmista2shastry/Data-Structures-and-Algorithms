@@ -1,32 +1,55 @@
 #include <bits/stdc++.h>
-using namespace std;
+
+void removeSpaces(string &str)
+{
+	int readIdx = 0, writeIdx = 0;
+	bool spaceEncountered = false;
+
+	while(str[readIdx] == ' ')
+	readIdx++;
+
+	while(readIdx < str.length())
+	{
+		if(str[readIdx] != ' ')
+		{
+			str[writeIdx] = str[readIdx];
+			writeIdx++;
+			spaceEncountered = false;
+		}
+
+		else if(!spaceEncountered)
+		{
+			str[writeIdx] = str[readIdx];
+			writeIdx++;
+			spaceEncountered = true;
+		}
+
+		readIdx++;
+	}
+
+	if(str[writeIdx-1] == ' ')
+	writeIdx--;
+	str.resize(writeIdx);
+}
 
 string reverseString(string &str){
 	// Write your code here.
-	int end = str.length()-1;	
-	string final = "";
+	removeSpaces(str);
+	reverse(str.begin(), str.end());
 
-	while(str[end] == ' ')
-	end--;
+	int start = 0;
 
-	while(end >= 0)
+	while(start < str.length())
 	{
-		int j = end;
+		int i = start;
 
-		while(str[end] != ' ' && end >= 0)
-		end--;
+		while(start < str.length() && str[start] != ' ')
+		start++;
 
-		string word = "";
-		word += str.substr(end+1, j-end);
+		reverse(str.begin()+i, str.begin()+start);
 
-		if(end > 0)
-		word += " ";
-
-		final += word;
-		
-		while(str[end] == ' ')
-		end--;
+		start++;
 	}
 
-	return final;
+	return str;
 }
