@@ -1,44 +1,48 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-#define int long long
-#define double long double
+#define ll long long
 
-int32_t main()
-{
-	ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-	
-	int t; cin >> t;
-	while(t--)
-	{
-		int n; cin >> n;
-		vector<pair<int, int>> a(n);
-		for(int i = 0 ; i < n ; ++i) {
-			cin >> a[i].first >> a[i].second;
-		}
+int main(){
+    
+    // write your code here
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        int n;
+        cin >> n;
+        vector<pair<ll, ll>> enemy(n);
+        for(int i=0; i<n; i++)
+        cin >> enemy[i].first >> enemy[i].second;
 
-		vector<pair<int, int>> v;
-		for(int i = 1 ; i < n ; ++i) {
-			int pts = min(a[i].first, a[i-1].second) - min(a[0].first, a[n-1].second);
-			v.push_back({pts, i});
-		}
-		sort(v.begin(), v.end());
+        vector<ll> postDetonation(n);
 
-		int index = 0;
-		if(v.size() > 0 && v[0].first < 0) {
-			index = v[0].second;
-		}
+        for(int i=1; i<n; i++)
+        {
+            if(enemy[i-1].second < enemy[i].first)
+            postDetonation[i] = enemy[i].first - enemy[i-1].second;
 
-int ans = 0;
+            else
+            postDetonation[i] = 0;
+        }
 
-		for(int i = 0 ; i < n ; ++i) {
-			ans += a[index].first;
-			int damage = a[index].second;
+        if(enemy[n-1].second < enemy[0].first)
+            postDetonation[0] = enemy[0].first - enemy[n-1].second;
 
-			index = (n + index + 1) % n;
+            else
+            postDetonation[0] = 0;
 
-			a[index].first = max(0LL, a[index].first - damage);
-		}
-		cout << ans << '\n';
-	}
-	return 0;
+            ll total = 0;
+            ll minBullets = LONG_LONG_MAX;
+
+            for(int i=0; i<n; i++)
+            total += postDetonation[i];
+
+            for(int i=0; i<n; i++)
+            minBullets = min(minBullets, enemy[i].first + (total - postDetonation[i]));
+
+            cout << minBullets << endl;
+    }
+
+    return 0;
 }
